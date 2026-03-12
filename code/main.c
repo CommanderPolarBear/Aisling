@@ -6,14 +6,19 @@
 #include "audio.h"
 
 void init_game();
-void run_game(mc player, audio* game_audio);
+void run_game(mc* player, audio* game_audio);
 void check_movement(mc* player);
 
 int main(void){
+    // Initialize the game.
     init_game();
+
+    // Load game resources.
     mc player = mc_init();
     audio game_audio = audio_init();
-    run_game(player, &game_audio);
+
+    // Run the game.
+    run_game(&player, &game_audio);
     return 0;
 }
 
@@ -24,27 +29,34 @@ void init_game(){
     InitWindow(window_width, window_height, "Top Secret");
 }
 
-void run_game(mc player, audio* game_audio){
+void run_game(mc* player, audio* game_audio){
     while (!WindowShouldClose()){
-        // Update audio stream
+        // Update audio stream.
         audio_update(game_audio);
 
-        // Detects player movement
-        check_movement(&player);
+        // Detects player movement.
+        check_movement(player);
+        if (player->position.x == 200){
+            play_scream(game_audio);
+        }
         
-        // Draw game assets to the screen
+        // Draw game assets to the screen.
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        DrawTexture(player.character, player.position.x, player.position.y, WHITE);
-        mc_update(&player);
+        DrawTexture(player->character, player->position.x, player->position.y, WHITE);
+        mc_update(player);
         EndDrawing();
     }
 
+    // Prepare to stop the game.
     audio_close(game_audio);
+
+    // Close the game window.
     CloseWindow();
 }
 
 void check_movement(mc* player){
+    // Check for player movement.
     if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)){
         player->moving_left = true;
     } else{
