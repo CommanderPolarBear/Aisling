@@ -4,6 +4,7 @@
 #include "settings.h"
 #include "character.h"
 #include "audio.h"
+#include "scene.h"
 
 typedef enum {
     GAMEPLAY,
@@ -12,7 +13,7 @@ typedef enum {
 } GameState;
 
 void InitGame(Settings* game_settings);
-void RunGame(Character* player, Audio* game_audio, Settings* game_settings);
+void RunGame(Character* player, Audio* game_audio, Settings* game_settings, scene* game_scene);
 
 int main(void){
     // Initialize the game.
@@ -22,9 +23,10 @@ int main(void){
     // Load game resources.
     Character player = InitCharacter(&game_settings);
     Audio game_audio = InitAudio(&game_settings);
+    scene game_scene = scene_init(&game_settings);
 
     // Run the game.
-    RunGame(&player, &game_audio, &game_settings);
+    RunGame(&player, &game_audio, &game_settings, &game_scene);
     return 0;
 }
 
@@ -39,7 +41,7 @@ void InitGame(Settings* game_settings){
     SetExitKey(0); // Prevent closing the window with ESC automatically so we can use it for pause
 }
 
-void RunGame(Character* player, Audio* game_audio, Settings* game_settings){
+void RunGame(Character* player, Audio* game_audio, Settings* game_settings, scene* game_scene){
     GameState game_state = GAMEPLAY;
     
     while (!WindowShouldClose()){
@@ -68,13 +70,11 @@ void RunGame(Character* player, Audio* game_audio, Settings* game_settings){
         // Draw game assets to the screen.
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        
-        DrawCharacter(player);
-        
+        draw_mainmenu(game_scene);
+        DrawCharacter(player);    
         if (game_state == PAUSE) {
             DrawText("PAUSED", game_settings->window_width / 2 - MeasureText("PAUSED", 40) / 2, game_settings->window_height / 2 - 20, 40, LIGHTGRAY);
         }
-
         EndDrawing();
     }
 
