@@ -3,22 +3,20 @@ This is for scene managing, such as loading and drawing the background.
 */
 
 #include "scene.h"
-#include "raylib.h"
-#include "settings.h"
 
-scene scene_init(){
+scene scene_init(Settings* game_settings){
     /* Initialize the game scene. */
     scene new_scene = {0};
 
     //load main menu background
     Image img = LoadImage("../assets/images/background/Mountain/parallax-mountain-bg.png");
-    ImageResize(&img, window_width, window_height);
+    ImageResize(&img, game_settings->window_width, game_settings->window_height);
     new_scene.mainmenu_background = LoadTextureFromImage(img);
     UnloadImage(img);
 
     //load game background 1
     img = LoadImage("../assets/images/background/Mountain/parallax-mountain-bg.png");
-    ImageResize(&img, window_width, window_height);
+    ImageResize(&img, game_settings->window_width, game_settings->window_height);
     new_scene.game_background_1 = LoadTextureFromImage(img);
     UnloadImage(img);
 
