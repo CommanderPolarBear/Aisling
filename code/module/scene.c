@@ -42,11 +42,6 @@ void DrawMainMenu(Scene* scene, Interactive* game_interactive, Settings* game_se
     );
 }
 
-void DrawInGame(Scene* scene){
-    /* Draw in-game scene. */
-    DrawTexture(scene->game_background, 0, 0, WHITE);
-}
-
 void DrawPauseMenu(Scene* scene, Settings* game_settings, Interactive* game_interactive){
     /* Draw pause menu scene. */
 
