@@ -17,11 +17,43 @@ Interactive InitInteractive(Settings* game_settings){
     new_interactive.settings_button = LoadTexture("../assets/images/buttons/settings.jpg");
     new_interactive.quit_button = LoadTexture("../assets/images/buttons/quit.jpg");
 
+    // Calculate play button bounds
+    new_interactive.play_bounds = (Rectangle){
+        (float)game_settings->window_width / 2.0f - (float)new_interactive.play_button.width / 2.0f,
+        (float)game_settings->window_height / 2.0f - (float)new_interactive.play_button.height / 2.0f - 2.0f * (float)new_interactive.play_button.height,
+        (float)new_interactive.play_button.width,
+        (float)new_interactive.play_button.height
+    };
+    
+    // Calculate settings button bounds
+    new_interactive.settings_bounds = (Rectangle){
+        (float)game_settings->window_width / 2.0f - (float)new_interactive.settings_button.width / 2.0f,
+        (float)game_settings->window_height / 2.0f - (float)new_interactive.settings_button.height / 2.0f,
+        (float)new_interactive.settings_button.width,
+        (float)new_interactive.settings_button.height
+    };
+    
+    // Calculate quit button bounds
+    new_interactive.quit_bounds = (Rectangle){
+        (float)game_settings->window_width / 2.0f - (float)new_interactive.quit_button.width / 2.0f,
+        (float)game_settings->window_height / 2.0f + (float)new_interactive.quit_button.height / 2.0f + (float)new_interactive.quit_button.height,
+        (float)new_interactive.quit_button.width,
+        (float)new_interactive.quit_button.height
+    };
+
     // Initialize slider dimensions.
     new_interactive.bar_width = 400.0f;
     new_interactive.bar_height = 10.0f;
     new_interactive.knob_width = 20.0f;
     new_interactive.knob_height = 30.0f;
+
+    // Slider logic
+    new_interactive.volume_slider_bar = (Rectangle){
+        (float)game_settings->window_width / 2.0f - new_interactive.bar_width / 2.0f,
+        (float)game_settings->window_height / 2.0f - new_interactive.bar_height / 2.0f,
+        new_interactive.bar_width,
+        new_interactive.bar_height
+    };
     
     return new_interactive;
 }
@@ -37,30 +69,6 @@ void UpdateInteractive(Interactive* interactive, Settings* game_settings){
     interactive->is_settings_clicked = false;
     interactive->is_quit_clicked = false;
 
-    // Calculate play button bounds
-    interactive->play_bounds = (Rectangle){
-        (float)game_settings->window_width / 2.0f - (float)interactive->play_button.width / 2.0f,
-        (float)game_settings->window_height / 2.0f - (float)interactive->play_button.height / 2.0f - 2.0f * (float)interactive->play_button.height,
-        (float)interactive->play_button.width,
-        (float)interactive->play_button.height
-    };
-
-    // Calculate settings button bounds
-    interactive->settings_bounds = (Rectangle){
-        (float)game_settings->window_width / 2.0f - (float)interactive->settings_button.width / 2.0f,
-        (float)game_settings->window_height / 2.0f - (float)interactive->settings_button.height / 2.0f,
-        (float)interactive->settings_button.width,
-        (float)interactive->settings_button.height
-    };
-
-    // Calculate quit button bounds
-    interactive->quit_bounds = (Rectangle){
-        (float)game_settings->window_width / 2.0f - (float)interactive->quit_button.width / 2.0f,
-        (float)game_settings->window_height / 2.0f + (float)interactive->quit_button.height / 2.0f + (float)interactive->quit_button.height,
-        (float)interactive->quit_button.width,
-        (float)interactive->quit_button.height
-    };
-
     // Check hover and clicks
     interactive->is_play_hovered = CheckCollisionPointRec(mouse_position, interactive->play_bounds);
     interactive->is_settings_hovered = CheckCollisionPointRec(mouse_position, interactive->settings_bounds);
@@ -70,13 +78,6 @@ void UpdateInteractive(Interactive* interactive, Settings* game_settings){
     if (interactive->is_settings_hovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) interactive->is_settings_clicked = true;
     if (interactive->is_quit_hovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) interactive->is_quit_clicked = true;
 
-    // Slider logic
-    interactive->volume_slider_bar = (Rectangle){
-        (float)game_settings->window_width / 2.0f - interactive->bar_width / 2.0f,
-        (float)game_settings->window_height / 2.0f - interactive->bar_height / 2.0f,
-        interactive->bar_width,
-        interactive->bar_height
-    };
 
     // Current volume position
     float knob_x = interactive->volume_slider_bar.x + (game_settings->game_volume * interactive->bar_width / 100.0f);

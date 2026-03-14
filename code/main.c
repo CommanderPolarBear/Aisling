@@ -14,16 +14,8 @@ Made by Andrew Zhuo and Steven Kenneth Darwy
 #include "scene.h"
 #include "settings.h"
 #include <stdio.h>
+#include "state.h"
 #include "data.h"
-
-typedef enum {
-  MAINMENU,
-  GAMEPLAY,
-  PAUSE,
-  GAMEOVER,
-  VIDEO_CUTSCENE,
-  DIALOGUE_CUTSCENE
-} GameState;
 
 void InitGame(Settings *game_settings);
 void RunGame(Character *player, Audio *game_audio, Settings *game_settings,
