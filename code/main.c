@@ -32,7 +32,7 @@ void EndGame(Audio *game_audio, Character *player, Item worldItems[], int itemCo
              Settings *game_settings);
 
 int main(void){
-  /* Initialize the game */
+    /* Initialize the game */
 
     // Initialize the settings and game.
     Settings game_settings = InitSettings();
